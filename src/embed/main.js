@@ -78,7 +78,8 @@ function onLoad() {
     WebVRConfig.YAW_ONLY = true;
   }
 
-  requestAnimationFrame(loop);
+  worldRenderer.vrDisplay.loopRequest = requestAnimationFrame(loop);
+  worldRenderer.vrDisplay.loopCallback = loop;
 }
 
 
@@ -340,9 +341,11 @@ function showStats() {
 function loop(time) {
   // Use the VRDisplay RAF if it is present.
   if (worldRenderer.vrDisplay) {
-    worldRenderer.vrDisplay.requestAnimationFrame(loop);
+    worldRenderer.vrDisplay.loopRequest = worldRenderer.vrDisplay.requestAnimationFrame(loop);
+    worldRenderer.vrDisplay.loopCallback = loop;
   } else {
-    requestAnimationFrame(loop);
+    worldRenderer.vrDisplay.loopRequest = requestAnimationFrame(loop);
+    worldRenderer.vrDisplay.loopCallback = loop;
   }
 
   stats.begin();
